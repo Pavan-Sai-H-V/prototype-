@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EHR Medicine Reminder System - Test Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #6366F1, #EC4899);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #1F2937;
+            margin-bottom: 8px;
+        }
+        
+        .header .emoji {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+        
+        .header p {
+            color: #6B7280;
+            font-size: 1.1rem;
+        }
+        
+        .section {
+            margin-bottom: 32px;
+            padding: 24px;
+            background: #F8FAFC;
+            border-radius: 12px;
+            border-left: 4px solid #6366F1;
+        }
+        
+        .section h2 {
+            color: #1F2937;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #374151;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #6366F1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .btn {
+            background: #6366F1;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background: #5856EB;
+            transform: translateY(-1px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-success {
+            background: #10B981;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        .btn-danger {
+            background: #EF4444;
+        }
+        
+        .btn-danger:hover {
+            background: #DC2626;
+        }
+        
+        .btn-warning {
+            background: #F59E0B;
+        }
+        
+        .btn-warning:hover {
+            background: #D97706;
+        }
+        
+        .reminder-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .reminder-card h3 {
+            color: #1F2937;
+            margin-bottom: 8px;
+        }
+        
+        .reminder-card p {
+            color: #6B7280;
+            margin-bottom: 4px;
+        }
+        
+        .reminder-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .status-taken {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .status-missed {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .response {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        
+        .response-success {
+            background: #D1FAE5;
+            border: 1px solid #A7F3D0;
+            color: #065F46;
+        }
+        
+        .response-error {
+            background: #FEE2E2;
+            border: 1px solid #FECACA;
+            color: #991B1B;
+        }
+        
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="emoji">💊</div>
+            <h1>EHR Medicine Reminder System</h1>
+            <p>Test Interface - Backend API Demo</p>
+        </div>
+
+        <!-- Login Section -->
+        <div class="section">
+            <h2>🔐 Authentication</h2>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="email" value="patient@test.com" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="password" value="test123" placeholder="Enter password">
+            </div>
+            <button class="btn" onclick="login()">Sign In</button>
+            <div id="loginResponse" class="response" style="display: none;"></div>
+        </div>
+
+        <!-- Reminders Section -->
+        <div class="section">
+            <h2>📅 Today's Reminders</h2>
+            <button class="btn" onclick="getTodaysReminders()">Load Reminders</button>
+            <div id="remindersContainer"></div>
+            <div id="remindersResponse" class="response" style="display: none;"></div>
+        </div>
+
+        <!-- Server Status -->
+        <div class="section">
+            <h2>🏥 Server Status</h2>
+            <button class="btn" onclick="checkHealth()">Check Server Health</button>
+            <div id="healthResponse" class="response" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentToken = null;
+        let currentUserId = '1'; // Mock user ID for testing
+
+        async function makeRequest(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(currentToken && { 'Authorization': `Bearer ${currentToken}` }),
+                        ...options.headers
+                    },
+                    ...options
+                });
+                
+                const data = await response.json();
+                return { success: response.ok, data, status: response.status };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function showResponse(elementId, result, loading = false) {
+            const element = document.getElementById(elementId);
+            if (loading) {
+                element.className = 'response loading';
+                element.textContent = 'Loading...';
+                element.style.display = 'block';
+                return;
+            }
+            
+            element.style.display = 'block';
+            element.className = `response ${result.success ? 'response-success' : 'response-error'}`;
+            element.textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            showResponse('loginResponse', {}, true);
+            
+            const result = await makeRequest('/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password })
+            });
+            
+            if (result.success) {
+                currentToken = result.data.token;
+                currentUserId = result.data.user.id;
+                showResponse('loginResponse', result);
+            } else {
+                showResponse('loginResponse', result);
+            }
+        }
+
+        async function getTodaysReminders() {
+            if (!currentUserId) {
+                alert('Please login first');
+                return;
+            }
+            
+            showResponse('remindersResponse', {}, true);
+            
+            const result = await makeRequest(`/api/reminders/today/${currentUserId}`);
+            
+            if (result.success) {
+                displayReminders(result.data);
+                showResponse('remindersResponse', result);
+            } else {
+                showResponse('remindersResponse', result);
+            }
+        }
+
+        async function checkHealth() {
+            showResponse('healthResponse', {}, true);
+            
+            const result = await makeRequest('/health');
+            showResponse('healthResponse', result);
+        }
+
+        function displayReminders(data) {
+            const container = document.getElementById('remindersContainer');
+            const { reminders, summary } = data;
+            
+            let html = `
+                <div style="margin: 16px 0; padding: 12px; background: #EBF8FF; border-radius: 8px;">
+                    <strong>Summary:</strong> 
+                    Total: ${summary.total} | 
+                    Taken: ${summary.taken} | 
+                    Pending: ${summary.pending} | 
+                    Missed: ${summary.missed}
+                </div>
+            `;
+            
+            // Display due reminders
+            if (reminders.due && reminders.due.length > 0) {
+                html += '<h3 style="color: #EF4444; margin: 16px 0 8px 0;">🚨 Due Now</h3>';
+                reminders.due.forEach(reminder => {
+                    html += createReminderCard(reminder, true);
+                });
+            }
+            
+            // Display upcoming reminders
+            if (reminders.upcoming && reminders.upcoming.length > 0) {
+                html += '<h3 style="color: #3B82F6; margin: 16px 0 8px 0;">⏰ Upcoming</h3>';
+                reminders.upcoming.forEach(reminder => {
+                    html += createReminderCard(reminder, false);
+                });
+            }
+            
+            // Display taken reminders
+            if (reminders.taken && reminders.taken.length > 0) {
+                html += '<h3 style="color: #10B981; margin: 16px 0 8px 0;">✅ Completed</h3>';
+                reminders.taken.forEach(reminder => {
+                    html += createReminderCard(reminder, false);
+                });
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function createReminderCard(reminder, showActions) {
+            const scheduledTime = new Date(reminder.scheduledTime).toLocaleTimeString();
+            const statusClass = `status-${reminder.status}`;
+            
+            return `
+                <div class="reminder-card">
+                    <h3>${reminder.medicineName} <span class="status ${statusClass}">${reminder.status}</span></h3>
+                    <p><strong>Dosage:</strong> ${reminder.dosage}</p>
+                    <p><strong>Time:</strong> ${scheduledTime}</p>
+                    <p><strong>Instructions:</strong> ${reminder.instructions.beforeAfterMeal.replace('_', ' ')}</p>
+                    <p><strong>Prescription:</strong> ${reminder.prescriptionId.prescriptionNumber} by Dr. ${reminder.prescriptionId.doctorId.name}</p>
+                    ${showActions ? `
+                        <div class="reminder-actions">
+                            <button class="btn btn-success" onclick="markReminder('${reminder._id}', 'taken')">✅ Take</button>
+                            <button class="btn btn-warning" onclick="markReminder('${reminder._id}', 'snooze')">⏰ Snooze</button>
+                            <button class="btn btn-danger" onclick="markReminder('${reminder._id}', 'missed')">❌ Miss</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        async function markReminder(reminderId, action) {
+            const endpoint = action === 'snooze' ? 'snooze' : `mark-${action}`;
+            
+            const result = await makeRequest(`/api/reminders/${reminderId}/${endpoint}`, {
+                method: 'POST',
+                body: JSON.stringify({})
+            });
+            
+            if (result.success) {
+                alert(`Reminder ${action === 'taken' ? 'marked as taken' : action === 'missed' ? 'marked as missed' : 'snoozed'}!`);
+                getTodaysReminders(); // Refresh the reminders
+            } else {
+                alert(`Failed to ${action} reminder: ${result.error || 'Unknown error'}`);
+            }
+        }
+
+        // Auto-load server status on page load
+        window.onload = () => {
+            checkHealth();
+        };
+    </script>
+</body>
+</html>
